@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ENTER IF YOU DARE</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+        /* Keep your loud, chaotic, retro-fantasy styling here */
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <div class="logo jitter">GUAP.GAMES <span class="sparkle">FANTASY</span> PORTAL</div>
+            <div class="ticker"><span>★ Welcome to the Party Dungeon ★ Best viewed on a CRT ★ Wizard says: Save often ★
+                    Under Construction forever ★</span></div>
+            <nav>
+                <a class="tab" href="#summaries">Session Summaries</a>
+                <a class="tab" href="#resources">Resources</a>
+                <a class="tab" href="#about">About</a>
+                <a class="tab" href="#fun">Fun Buttons</a>
+            </nav>
+        </header>
+
+        <main id="content" class="card"></main>
+
+        <footer>
+            <div>VISITOR COUNTER <span class="counter" id="hits"></span> • © <span id="year"></span> guap.games
+                Adventurers’ Guild</div>
+        </footer>
+    </div>
+
+    <script>
+        // Hit counter
+        (function () {
+            const k = 'guapgames_hits';
+            let n = parseInt(localStorage.getItem(k) || '0', 10) + 1;
+            localStorage.setItem(k, n);
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('hits').textContent = n.toString().padStart(7, '0');
+                document.getElementById('year').textContent = new Date().getFullYear();
+            });
+        })();
+
+        // Simple router
+        const routes = { summaries: viewSummaries, resources: viewResources, about: viewAbout, fun: viewFun };
+        function route() {
+            const hash = location.hash || '#summaries';
+            document.querySelectorAll('.tab').forEach(a => a.classList.toggle('active', a.getAttribute('href') === hash));
+            const view = routes[hash.slice(1)] || viewSummaries;
+            const el = document.getElementById('content');
+            el.innerHTML = '';
+            el.appendChild(view());
+        }
+        addEventListener('hashchange', route);
+        addEventListener('DOMContentLoaded', route);
+
+        function section(title) { const s = document.createElement('section'); const h = document.createElement('h2'); h.textContent = title; s.append(h); return s; }
+        function div(cls, html) { const d = document.createElement('div'); if (cls) d.className = cls; if (html) d.innerHTML = html; return d; }
+
+        function wrapCard(inner) { const c = document.createElement('div'); c.className = 'card'; c.append(inner); return c; }
+
+        function viewSummaries() {
+            const s = section('Main Session Summaries');
+            s.append(div(null, `<p><strong>Format tip:</strong> Duplicate this block per arc. Loud formatting encouraged.</p>`));
+            s.append(div(null, `<details open><summary><strong>Arc:</strong> The Ember King's Debt</summary><ul><li><strong>Date:</strong> 2025‑08‑09</li><li><strong>Cast:</strong> Asha, Bronn, Kestrel, Sister Ilya</li><li><strong>Highlights:</strong> Moon‑Dial riddle cracked; truce with bog sprites; clutch Turn Undead saved the day.</li></ul></details>`));
+            return wrapCard(s);
+        }
+
+        function viewResources() {
+            const s = section('Resources');
+            s.append(div(null, `<ul>
+        <li><a href="assets/primer.pdf" target="_blank">Campaign Primer (PDF)</a></li>
+        <li><a href="assets/house-rules.pdf" target="_blank">House Rules</a></li>
+        <li><a href="assets/region-map.png" target="_blank">Region Map (PNG)</a></li>
+      </ul>`));
+            return wrapCard(s);
+        }
+
+        function viewAbout() {
+            const s = section('About This Campaign');
+            s.append(div(null, `<p>Welcome to our proudly chaotic party portal. It’s <em>brutalist 90s fantasy</em>: gold glare, dungeon grime, and eternal “Under Construction.”</p>`));
+            return wrapCard(s);
+        }
+
+        function viewFun() {
+            const s = section('Fun Button Page');
+            s.append(div(null, '<p>Collect ’em like rare loot. Right‑click to copy.</p>'));
+            const grid = div('buttons');
+            const items = [['BEST VIEWED ON CRT', '#'], ['UNDER CONSTRUCTION', '#'], ['+2 TO VIBES', '#']];
+            items.forEach(([label, href]) => { const a = document.createElement('a'); a.href = href; a.target = '_blank'; a.className = 'web-btn'; a.textContent = label; grid.appendChild(a); });
+            s.append(grid);
+            return wrapCard(s);
+        }
+    </script>
+</body>
+
+</html>
