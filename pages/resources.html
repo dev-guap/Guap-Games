@@ -1,0 +1,35 @@
+<section>
+    <h2>Resources — Party Eyes Only</h2>
+    <div class="lock">
+        <input type="password" placeholder="enter password">
+        <button>UNLOCK</button>
+        <div>Hint: ask your DM.</div>
+    </div>
+    <div class="hidden">
+        <h3>Downloads</h3>
+        <ul>
+            <li><a href="#">Campaign Primer (PDF)</a></li>
+            <li><a href="#">House Rules</a></li>
+            <li><a href="#">Region Map (PNG)</a></li>
+        </ul>
+        <div class="hr"></div>
+        <h3>NPC & Faction Cheats</h3>
+        <p>Add card snippets here for recurring faces and banners.</p>
+    </div>
+    <p style="opacity:.7">Reminder: this is a fun, client-side lock. For actual security, put these behind real auth.
+    </p>
+</section>
+
+<script>
+    document.currentScript.parentElement.querySelector('button').addEventListener('click', function () {
+        const input = this.previousElementSibling;
+        const msg = this.nextElementSibling;
+        if (input.value === 'dragons!') {
+            document.querySelector('.lock').classList.add('hidden');
+            document.querySelector('.hidden').classList.remove('hidden');
+        } else {
+            msg.textContent = 'The wards repel you! (wrong password)';
+            msg.style.color = 'var(--blood)';
+        }
+    });
+</script>
